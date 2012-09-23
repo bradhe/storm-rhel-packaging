@@ -9,9 +9,9 @@
 RETVAL=0
 
 STORM_USER=root
-PID_FILE="/var/run/storm-nimbus.pid"
+PID_FILE="/home/ubuntu/storm-nimbus.pid"
 
-STORM_HOME="/opt/storm"
+STORM_HOME="/home/ubuntu/storm-0.8.0"
 LIB="$STORM_HOME/lib"
 STORM_JAR=($STORM_HOME/storm-*.jar)
 STORM_CONF="$STORM_HOME/conf"
@@ -32,7 +32,7 @@ start() {
 	exit 1
     else
 	echo "Starting storm nimbus..."
-    fi 
+    fi
     STORM_CMD="java -$JVM_TYPE -Xmx$NIMBUS_JVM_MEMORY -Djava.library.path=\"$JAVA_LIBRARY_PATH\" -Dstorm.options=\"$STORM_OPTIONS\" -Dstorm.home=\"$STORM_HOME\" -Dlog4j.configuration=storm.log.properties -Dlogfile.name=nimbus.log $NIMBUS_JVM_OPTS -cp \"$CLASSPATH\" backtype.storm.daemon.nimbus &"
     daemon "$STORM_CMD > /dev/null && echo \$! > $PID_FILE"
     RETVAL=$?
@@ -61,7 +61,7 @@ storm_status() {
     local pidfile="$1" # IN
     local pid=`cat "$pidfile" 2>/dev/null`
     if [ "$pid" = '' ]; then
-    # The file probably does not exist or is empty. 
+    # The file probably does not exist or is empty.
         return 1
     fi
 
@@ -73,7 +73,7 @@ storm_status() {
 
 print_storm_status() {
     if storm_status $PID_FILE; then
-        echo "Storm nimbus is running."	
+        echo "Storm nimbus is running."
     else
 	echo "Storm nimbus is stopped."
      fi
@@ -96,7 +96,7 @@ case "$1" in
         stop
         ;;
   status)
-  	print_storm_status		 
+  	print_storm_status
         ;;
   restart)
         restart
